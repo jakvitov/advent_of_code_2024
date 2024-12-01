@@ -56,8 +56,8 @@ pub fn second() -> i32{
     let mut res = 0;
     for i in first_list {
         let mult = second_map.get(&i);
-        if (mult.is_some()) {
-            res = res * mult.unwrap()
+        if mult.is_some() {
+            res = res + (i * mult.unwrap())
         }
     }
 

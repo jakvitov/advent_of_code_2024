@@ -7,8 +7,8 @@ pub fn get_location_lists() -> (Vec<i32>, Vec<i32>) {
 
     let rows: Vec<&str> = input.split("\n").collect();
     
-    let mut first_list: Vec<i32> = vec![];
-    let mut second_list: Vec<i32> = vec![];
+    let mut first_list: Vec<i32> = Vec::new();
+    let mut second_list: Vec<i32> = Vec::new();
 
     for row in rows {
         let items: Vec<&str> = row.split_whitespace().collect();

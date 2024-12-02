@@ -24,44 +24,20 @@ fn is_level_valid(level: &Vec<i32>) -> bool {
     return diffs_valid
 }
 
-//Is the array sorted with toleration of one field, returned in the second argument
-fn is_sorted_toleration(level:  &Vec<i32>) -> (bool, Option<usize>) {
-    let asc = level[1] > level[0];
-    for i in 1..level.len() {
-        if (asc && level[i] < level[i-1]) || (!asc && level[i] > level[i-1]) {
-            return (false, Some(i))
+fn is_valid_toleration(level: &Vec<i32>) -> bool {
+    if is_level_valid(level) {
+        return true;
+    }
+    for i in 0..level.len() {
+        //Horrible copying of one vector over again :)
+        let mut adj_level: Vec<i32> = level.to_vec();
+        adj_level.remove(i);
+        if (is_level_valid(&adj_level)) {
+            return true;
         }
     }
-    //We are sorted
-    return (true, None)
+    return false;
 }
-
-fn is_level_valid_toleration(level_input: &Vec<i32>) -> bool {
-    let level = &mut level_input.to_vec();
-    let (sorted, invalid) = is_sorted_toleration(level);
-    if !sorted {
-        //Remove the first invalid
-        level.remove(invalid.unwrap());
-        if !is_level_valid(level) {
-            println!("Invalid after removal: {:?}.", level);
-        }
-        return is_level_valid(level)
-    }
-
-    //Calculating the difference
-    for i in 1..level.len() {
-        let diff = (level[i-1] - level[i]).abs();
-        if diff < 1 || diff > 3 {
-            level.remove(i);
-            if !is_level_valid(level) {
-                println!("Invalid after removal: {:?}.", level);
-            }
-            return is_level_valid(level);
-        } 
-    }
-
-    return true;
-} 
 
 pub fn first() -> usize {
     let levels  = get_input();
@@ -70,6 +46,6 @@ pub fn first() -> usize {
 
 pub fn second() -> usize {
     let levels = get_input();
-    return levels.into_iter().filter(|level| is_level_valid_toleration(level)).count();
+    return levels.into_iter().filter(|level| is_valid_toleration(level)).count();
 }
 

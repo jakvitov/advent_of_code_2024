@@ -11,5 +11,7 @@ fn main() {
     println!("Day 2, Task 2: {}.", day_2::second());
     println!("--------------------------------");
     println!("Day 3, Task 1: {}.", day_3::first());
+    println!("Day 3, Task 2: {}.", day_3::second());
+    println!("--------------------------------");
 
 }

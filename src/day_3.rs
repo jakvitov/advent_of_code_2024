@@ -55,14 +55,51 @@ fn next_char(automata: &mut MulAutomata, c: char, sum: &mut i64) {
     }
 }
 
-pub fn first() -> i64{
-    let input_str = include_str!("inputs/day3_input");
+fn process_input_with_mul_automata(input:&str) -> i64 {
     let automata = &mut MulAutomata{first_num: String::new(), second_num: String::new(), state: MulAutomataState::Idle};
     let sum: &mut i64 = &mut 0;
 
-    for i in input_str.chars() {
+    for i in input.chars() {
         next_char(automata, i, sum);
     }
 
     return *sum;
+}
+
+pub fn first() -> i64{
+    let input_str = include_str!("inputs/day3_input");
+    return process_input_with_mul_automata(input_str);
+}
+
+fn clear_input(input: &str) -> Vec<&str> {
+    let mut split: Vec<&str> = Vec::new(); 
+    let do_commands_split: Vec<&str> = input.split_inclusive("do()").collect();
+    for i in do_commands_split {
+        let mut s: Vec<&str> = i.split_inclusive("don't()").collect();
+        split.append(&mut s);
+    }
+
+    let mut removing = false;
+    let mut cleared_input: Vec<&str> = Vec::new();
+    for i in split {
+        //println!("{i:?}");
+        if !removing {
+            cleared_input.push(i)
+        }
+        if i.ends_with("don't()") {
+            removing = true;
+        } else if i.ends_with("do()") {
+            removing = false;
+        }
+    }
+
+    return cleared_input
+}
+
+pub fn second() -> i64 {
+    
+    let input_str = include_str!("inputs/day3_input");
+    
+    //println!("{:?}", cleared_input);
+    return clear_input(input_str).into_iter().map(|row| {process_input_with_mul_automata(row)}).sum();
 }

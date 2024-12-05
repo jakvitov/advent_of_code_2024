@@ -32,7 +32,7 @@ fn is_valid_toleration(level: &Vec<i32>) -> bool {
         //Horrible copying of one vector over again :)
         let mut adj_level: Vec<i32> = level.to_vec();
         adj_level.remove(i);
-        if (is_level_valid(&adj_level)) {
+        if is_level_valid(&adj_level) {
             return true;
         }
     }
